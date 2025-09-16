@@ -1,3 +1,5 @@
+Drop database if exists recetas_db;
+
 -- Usar una base de datos (cámbiala por el nombre que prefieras)
 CREATE DATABASE IF NOT EXISTS `recetas_db`;
 USE `recetas_db`;
@@ -94,5 +96,46 @@ CREATE TABLE `receta_ingredientes` (
   CONSTRAINT `fk_receta_ingredientes_ingredientes`
     FOREIGN KEY (`ingrediente_id`)
     REFERENCES `ingredientes` (`id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Tabla de Comentarios
+CREATE TABLE `comentarios` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `receta_id` INT NOT NULL,
+  `usuario_id` INT NOT NULL,
+  `comentario` TEXT NOT NULL,
+  `fecha_comentario` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_comentarios_recetas_idx` (`receta_id` ASC),
+  INDEX `fk_comentarios_usuarios_idx` (`usuario_id` ASC),
+  CONSTRAINT `fk_comentarios_recetas`
+    FOREIGN KEY (`receta_id`)
+    REFERENCES `recetas` (`id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `fk_comentarios_usuarios`
+    FOREIGN KEY (`usuario_id`)
+    REFERENCES `usuarios` (`id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Tabla de Calificaciones
+CREATE TABLE `calificaciones` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `receta_id` INT NOT NULL,
+  `usuario_id` INT NOT NULL,
+  `puntuacion` INT NOT NULL,
+  `fecha_calificacion` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `unique_calificacion` (`receta_id` ASC, `usuario_id` ASC),
+  INDEX `fk_calificaciones_recetas_idx` (`receta_id` ASC),
+  INDEX `fk_calificaciones_usuarios_idx` (`usuario_id` ASC),
+  CONSTRAINT `fk_calificaciones_recetas`
+    FOREIGN KEY (`receta_id`)
+    REFERENCES `recetas` (`id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `fk_calificaciones_usuarios`
+    FOREIGN KEY (`usuario_id`)
+    REFERENCES `usuarios` (`id`)
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
