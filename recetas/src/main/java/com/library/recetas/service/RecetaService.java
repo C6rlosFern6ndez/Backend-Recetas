@@ -1,32 +1,56 @@
 package com.library.recetas.service;
 
+import com.library.recetas.dto.RecetaDTO;
+import com.library.recetas.exception.ResourceNotFoundException;
+import com.library.recetas.mapper.RecetaMapper;
 import com.library.recetas.model.Receta;
 import com.library.recetas.repository.RecetaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class RecetaService {
 
-    @Autowired
-    private RecetaRepository recetaRepository;
+    private final RecetaRepository recetaRepository;
+    private final RecetaMapper recetaMapper;
 
-    public List<Receta> findAll() {
-        return recetaRepository.findAll();
+    public List<RecetaDTO> findAll() {
+        return recetaRepository.findAll().stream()
+                .map(recetaMapper::toDTO)
+                .toList();
     }
 
-    public Optional<Receta> findById(Integer id) {
-        return recetaRepository.findRecetaWithDetailsById(id);
+    public RecetaDTO findById(Integer id) {
+        return recetaRepository.findRecetaWithDetailsById(id)
+                .map(recetaMapper::toDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Receta", "id", id));
     }
 
-    public Receta save(Receta receta) {
-        return recetaRepository.save(receta);
+    public RecetaDTO save(RecetaDTO recetaDTO) {
+        Receta receta = recetaMapper.toEntity(recetaDTO);
+        // Aquí se podría asignar el usuario autenticado a la receta
+        return recetaMapper.toDTO(recetaRepository.save(receta));
+    }
+
+    public RecetaDTO update(Integer id, RecetaDTO recetaDTO) {
+        Receta existingReceta = recetaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Receta", "id", id));
+        
+        recetaMapper.updateEntityFromDTO(recetaDTO, existingReceta);
+        return recetaMapper.toDTO(recetaRepository.save(existingReceta));
     }
 
     public void deleteById(Integer id) {
+        if (!recetaRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Receta", "id", id);
+        }
         recetaRepository.deleteById(id);
     }
 

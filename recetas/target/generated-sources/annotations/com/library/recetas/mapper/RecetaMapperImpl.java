@@ -12,7 +12,6 @@ import com.library.recetas.model.Comentario;
 import com.library.recetas.model.Paso;
 import com.library.recetas.model.Receta;
 import com.library.recetas.model.RecetaIngrediente;
-import com.library.recetas.model.Usuario;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T12:17:08+0200",
+    date = "2025-09-23T12:29:15+0200",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
@@ -103,9 +102,9 @@ public class RecetaMapperImpl implements RecetaMapper {
     }
 
     @Override
-    public void updateEntityFromDTO(RecetaDTO recetaDTO, Receta receta) {
+    public Receta updateEntityFromDTO(RecetaDTO recetaDTO, Receta receta) {
         if ( recetaDTO == null ) {
-            return;
+            return receta;
         }
 
         if ( receta.getCalificaciones() != null ) {
@@ -158,8 +157,6 @@ public class RecetaMapperImpl implements RecetaMapper {
         }
         receta.setDescripcion( recetaDTO.getDescripcion() );
         receta.setDificultad( recetaDTO.getDificultad() );
-        receta.setFechaCreacion( recetaDTO.getFechaCreacion() );
-        receta.setId( recetaDTO.getId() );
         if ( receta.getPasos() != null ) {
             Set<Paso> set3 = pasoDTOSetToPasoSet( recetaDTO.getPasos() );
             if ( set3 != null ) {
@@ -177,17 +174,26 @@ public class RecetaMapperImpl implements RecetaMapper {
             }
         }
         receta.setPorciones( recetaDTO.getPorciones() );
-        receta.setTiempoPreparacion( recetaDTO.getTiempoPreparacion() );
-        receta.setTitulo( recetaDTO.getTitulo() );
-        if ( recetaDTO.getUsuario() != null ) {
-            if ( receta.getUsuario() == null ) {
-                receta.setUsuario( new Usuario() );
+        if ( receta.getRecetaIngredientes() != null ) {
+            Set<RecetaIngrediente> set4 = recetaIngredienteDTOSetToRecetaIngredienteSet( recetaDTO.getRecetaIngredientes() );
+            if ( set4 != null ) {
+                receta.getRecetaIngredientes().clear();
+                receta.getRecetaIngredientes().addAll( set4 );
             }
-            usuarioMapper.updateEntityFromDto( recetaDTO.getUsuario(), receta.getUsuario() );
+            else {
+                receta.setRecetaIngredientes( null );
+            }
         }
         else {
-            receta.setUsuario( null );
+            Set<RecetaIngrediente> set4 = recetaIngredienteDTOSetToRecetaIngredienteSet( recetaDTO.getRecetaIngredientes() );
+            if ( set4 != null ) {
+                receta.setRecetaIngredientes( set4 );
+            }
         }
+        receta.setTiempoPreparacion( recetaDTO.getTiempoPreparacion() );
+        receta.setTitulo( recetaDTO.getTitulo() );
+
+        return receta;
     }
 
     protected CalificacionDTO calificacionToCalificacionDTO(Calificacion calificacion) {
