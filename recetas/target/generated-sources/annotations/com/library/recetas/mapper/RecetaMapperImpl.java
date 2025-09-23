@@ -12,6 +12,7 @@ import com.library.recetas.model.Comentario;
 import com.library.recetas.model.Paso;
 import com.library.recetas.model.Receta;
 import com.library.recetas.model.RecetaIngrediente;
+import com.library.recetas.model.Usuario;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -22,8 +23,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T11:53:03+0200",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
+    date = "2025-09-23T12:17:08+0200",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
 public class RecetaMapperImpl implements RecetaMapper {
@@ -45,19 +46,19 @@ public class RecetaMapperImpl implements RecetaMapper {
 
         RecetaDTO recetaDTO = new RecetaDTO();
 
-        recetaDTO.setId( receta.getId() );
-        recetaDTO.setTitulo( receta.getTitulo() );
-        recetaDTO.setDescripcion( receta.getDescripcion() );
-        recetaDTO.setTiempoPreparacion( receta.getTiempoPreparacion() );
-        recetaDTO.setDificultad( receta.getDificultad() );
-        recetaDTO.setPorciones( receta.getPorciones() );
-        recetaDTO.setUsuario( usuarioMapper.toDTO( receta.getUsuario() ) );
-        recetaDTO.setFechaCreacion( receta.getFechaCreacion() );
-        recetaDTO.setPasos( pasoSetToPasoDTOSet( receta.getPasos() ) );
-        recetaDTO.setComentarios( comentarioSetToComentarioDTOSet( receta.getComentarios() ) );
         recetaDTO.setCalificaciones( calificacionSetToCalificacionDTOSet( receta.getCalificaciones() ) );
-        recetaDTO.setRecetaIngredientes( recetaIngredienteSetToRecetaIngredienteDTOSet( receta.getRecetaIngredientes() ) );
         recetaDTO.setCategorias( categoriaSetToCategoriaDTOSet( receta.getCategorias() ) );
+        recetaDTO.setComentarios( comentarioSetToComentarioDTOSet( receta.getComentarios() ) );
+        recetaDTO.setDescripcion( receta.getDescripcion() );
+        recetaDTO.setDificultad( receta.getDificultad() );
+        recetaDTO.setFechaCreacion( receta.getFechaCreacion() );
+        recetaDTO.setId( receta.getId() );
+        recetaDTO.setPasos( pasoSetToPasoDTOSet( receta.getPasos() ) );
+        recetaDTO.setPorciones( receta.getPorciones() );
+        recetaDTO.setRecetaIngredientes( recetaIngredienteSetToRecetaIngredienteDTOSet( receta.getRecetaIngredientes() ) );
+        recetaDTO.setTiempoPreparacion( receta.getTiempoPreparacion() );
+        recetaDTO.setTitulo( receta.getTitulo() );
+        recetaDTO.setUsuario( usuarioMapper.toDTO( receta.getUsuario() ) );
 
         return recetaDTO;
     }
@@ -84,19 +85,19 @@ public class RecetaMapperImpl implements RecetaMapper {
 
         Receta receta = new Receta();
 
-        receta.setId( recetaDTO.getId() );
-        receta.setTitulo( recetaDTO.getTitulo() );
-        receta.setDescripcion( recetaDTO.getDescripcion() );
-        receta.setTiempoPreparacion( recetaDTO.getTiempoPreparacion() );
-        receta.setDificultad( recetaDTO.getDificultad() );
-        receta.setPorciones( recetaDTO.getPorciones() );
-        receta.setUsuario( usuarioMapper.toEntity( recetaDTO.getUsuario() ) );
-        receta.setFechaCreacion( recetaDTO.getFechaCreacion() );
-        receta.setPasos( pasoDTOSetToPasoSet( recetaDTO.getPasos() ) );
-        receta.setComentarios( comentarioDTOSetToComentarioSet( recetaDTO.getComentarios() ) );
         receta.setCalificaciones( calificacionDTOSetToCalificacionSet( recetaDTO.getCalificaciones() ) );
-        receta.setRecetaIngredientes( recetaIngredienteDTOSetToRecetaIngredienteSet( recetaDTO.getRecetaIngredientes() ) );
         receta.setCategorias( categoriaDTOSetToCategoriaSet( recetaDTO.getCategorias() ) );
+        receta.setComentarios( comentarioDTOSetToComentarioSet( recetaDTO.getComentarios() ) );
+        receta.setDescripcion( recetaDTO.getDescripcion() );
+        receta.setDificultad( recetaDTO.getDificultad() );
+        receta.setFechaCreacion( recetaDTO.getFechaCreacion() );
+        receta.setId( recetaDTO.getId() );
+        receta.setPasos( pasoDTOSetToPasoSet( recetaDTO.getPasos() ) );
+        receta.setPorciones( recetaDTO.getPorciones() );
+        receta.setRecetaIngredientes( recetaIngredienteDTOSetToRecetaIngredienteSet( recetaDTO.getRecetaIngredientes() ) );
+        receta.setTiempoPreparacion( recetaDTO.getTiempoPreparacion() );
+        receta.setTitulo( recetaDTO.getTitulo() );
+        receta.setUsuario( usuarioMapper.toEntity( recetaDTO.getUsuario() ) );
 
         return receta;
     }
@@ -107,119 +108,86 @@ public class RecetaMapperImpl implements RecetaMapper {
             return;
         }
 
-        receta.setId( recetaDTO.getId() );
-        receta.setTitulo( recetaDTO.getTitulo() );
-        receta.setDescripcion( recetaDTO.getDescripcion() );
-        receta.setTiempoPreparacion( recetaDTO.getTiempoPreparacion() );
-        receta.setDificultad( recetaDTO.getDificultad() );
-        receta.setPorciones( recetaDTO.getPorciones() );
-        receta.setUsuario( usuarioMapper.toEntity( recetaDTO.getUsuario() ) );
-        receta.setFechaCreacion( recetaDTO.getFechaCreacion() );
-        if ( receta.getPasos() != null ) {
-            Set<Paso> set = pasoDTOSetToPasoSet( recetaDTO.getPasos() );
-            if ( set != null ) {
-                receta.getPasos().clear();
-                receta.getPasos().addAll( set );
-            }
-            else {
-                receta.setPasos( null );
-            }
-        }
-        else {
-            Set<Paso> set = pasoDTOSetToPasoSet( recetaDTO.getPasos() );
-            if ( set != null ) {
-                receta.setPasos( set );
-            }
-        }
-        if ( receta.getComentarios() != null ) {
-            Set<Comentario> set1 = comentarioDTOSetToComentarioSet( recetaDTO.getComentarios() );
-            if ( set1 != null ) {
-                receta.getComentarios().clear();
-                receta.getComentarios().addAll( set1 );
-            }
-            else {
-                receta.setComentarios( null );
-            }
-        }
-        else {
-            Set<Comentario> set1 = comentarioDTOSetToComentarioSet( recetaDTO.getComentarios() );
-            if ( set1 != null ) {
-                receta.setComentarios( set1 );
-            }
-        }
         if ( receta.getCalificaciones() != null ) {
-            Set<Calificacion> set2 = calificacionDTOSetToCalificacionSet( recetaDTO.getCalificaciones() );
-            if ( set2 != null ) {
+            Set<Calificacion> set = calificacionDTOSetToCalificacionSet( recetaDTO.getCalificaciones() );
+            if ( set != null ) {
                 receta.getCalificaciones().clear();
-                receta.getCalificaciones().addAll( set2 );
+                receta.getCalificaciones().addAll( set );
             }
             else {
                 receta.setCalificaciones( null );
             }
         }
         else {
-            Set<Calificacion> set2 = calificacionDTOSetToCalificacionSet( recetaDTO.getCalificaciones() );
-            if ( set2 != null ) {
-                receta.setCalificaciones( set2 );
+            Set<Calificacion> set = calificacionDTOSetToCalificacionSet( recetaDTO.getCalificaciones() );
+            if ( set != null ) {
+                receta.setCalificaciones( set );
             }
         }
         if ( receta.getCategorias() != null ) {
-            Set<Categoria> set3 = categoriaDTOSetToCategoriaSet( recetaDTO.getCategorias() );
-            if ( set3 != null ) {
+            Set<Categoria> set1 = categoriaDTOSetToCategoriaSet( recetaDTO.getCategorias() );
+            if ( set1 != null ) {
                 receta.getCategorias().clear();
-                receta.getCategorias().addAll( set3 );
+                receta.getCategorias().addAll( set1 );
             }
             else {
                 receta.setCategorias( null );
             }
         }
         else {
-            Set<Categoria> set3 = categoriaDTOSetToCategoriaSet( recetaDTO.getCategorias() );
-            if ( set3 != null ) {
-                receta.setCategorias( set3 );
+            Set<Categoria> set1 = categoriaDTOSetToCategoriaSet( recetaDTO.getCategorias() );
+            if ( set1 != null ) {
+                receta.setCategorias( set1 );
             }
         }
-    }
-
-    protected Set<PasoDTO> pasoSetToPasoDTOSet(Set<Paso> set) {
-        if ( set == null ) {
-            return null;
+        if ( receta.getComentarios() != null ) {
+            Set<Comentario> set2 = comentarioDTOSetToComentarioSet( recetaDTO.getComentarios() );
+            if ( set2 != null ) {
+                receta.getComentarios().clear();
+                receta.getComentarios().addAll( set2 );
+            }
+            else {
+                receta.setComentarios( null );
+            }
         }
-
-        Set<PasoDTO> set1 = new LinkedHashSet<PasoDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Paso paso : set ) {
-            set1.add( pasoMapper.toDTO( paso ) );
+        else {
+            Set<Comentario> set2 = comentarioDTOSetToComentarioSet( recetaDTO.getComentarios() );
+            if ( set2 != null ) {
+                receta.setComentarios( set2 );
+            }
         }
-
-        return set1;
-    }
-
-    protected ComentarioDTO comentarioToComentarioDTO(Comentario comentario) {
-        if ( comentario == null ) {
-            return null;
+        receta.setDescripcion( recetaDTO.getDescripcion() );
+        receta.setDificultad( recetaDTO.getDificultad() );
+        receta.setFechaCreacion( recetaDTO.getFechaCreacion() );
+        receta.setId( recetaDTO.getId() );
+        if ( receta.getPasos() != null ) {
+            Set<Paso> set3 = pasoDTOSetToPasoSet( recetaDTO.getPasos() );
+            if ( set3 != null ) {
+                receta.getPasos().clear();
+                receta.getPasos().addAll( set3 );
+            }
+            else {
+                receta.setPasos( null );
+            }
         }
-
-        ComentarioDTO comentarioDTO = new ComentarioDTO();
-
-        comentarioDTO.setId( comentario.getId() );
-        comentarioDTO.setComentario( comentario.getComentario() );
-        comentarioDTO.setFechaComentario( comentario.getFechaComentario() );
-        comentarioDTO.setUsuario( usuarioMapper.toDTO( comentario.getUsuario() ) );
-
-        return comentarioDTO;
-    }
-
-    protected Set<ComentarioDTO> comentarioSetToComentarioDTOSet(Set<Comentario> set) {
-        if ( set == null ) {
-            return null;
+        else {
+            Set<Paso> set3 = pasoDTOSetToPasoSet( recetaDTO.getPasos() );
+            if ( set3 != null ) {
+                receta.setPasos( set3 );
+            }
         }
-
-        Set<ComentarioDTO> set1 = new LinkedHashSet<ComentarioDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Comentario comentario : set ) {
-            set1.add( comentarioToComentarioDTO( comentario ) );
+        receta.setPorciones( recetaDTO.getPorciones() );
+        receta.setTiempoPreparacion( recetaDTO.getTiempoPreparacion() );
+        receta.setTitulo( recetaDTO.getTitulo() );
+        if ( recetaDTO.getUsuario() != null ) {
+            if ( receta.getUsuario() == null ) {
+                receta.setUsuario( new Usuario() );
+            }
+            usuarioMapper.updateEntityFromDto( recetaDTO.getUsuario(), receta.getUsuario() );
         }
-
-        return set1;
+        else {
+            receta.setUsuario( null );
+        }
     }
 
     protected CalificacionDTO calificacionToCalificacionDTO(Calificacion calificacion) {
@@ -229,9 +197,9 @@ public class RecetaMapperImpl implements RecetaMapper {
 
         CalificacionDTO calificacionDTO = new CalificacionDTO();
 
+        calificacionDTO.setFechaCalificacion( calificacion.getFechaCalificacion() );
         calificacionDTO.setId( calificacion.getId() );
         calificacionDTO.setPuntuacion( calificacion.getPuntuacion() );
-        calificacionDTO.setFechaCalificacion( calificacion.getFechaCalificacion() );
         calificacionDTO.setUsuario( usuarioMapper.toDTO( calificacion.getUsuario() ) );
 
         return calificacionDTO;
@@ -250,6 +218,60 @@ public class RecetaMapperImpl implements RecetaMapper {
         return set1;
     }
 
+    protected Set<CategoriaDTO> categoriaSetToCategoriaDTOSet(Set<Categoria> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<CategoriaDTO> set1 = new LinkedHashSet<CategoriaDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( Categoria categoria : set ) {
+            set1.add( categoriaMapper.toDTO( categoria ) );
+        }
+
+        return set1;
+    }
+
+    protected ComentarioDTO comentarioToComentarioDTO(Comentario comentario) {
+        if ( comentario == null ) {
+            return null;
+        }
+
+        ComentarioDTO comentarioDTO = new ComentarioDTO();
+
+        comentarioDTO.setComentario( comentario.getComentario() );
+        comentarioDTO.setFechaComentario( comentario.getFechaComentario() );
+        comentarioDTO.setId( comentario.getId() );
+        comentarioDTO.setUsuario( usuarioMapper.toDTO( comentario.getUsuario() ) );
+
+        return comentarioDTO;
+    }
+
+    protected Set<ComentarioDTO> comentarioSetToComentarioDTOSet(Set<Comentario> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<ComentarioDTO> set1 = new LinkedHashSet<ComentarioDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( Comentario comentario : set ) {
+            set1.add( comentarioToComentarioDTO( comentario ) );
+        }
+
+        return set1;
+    }
+
+    protected Set<PasoDTO> pasoSetToPasoDTOSet(Set<Paso> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<PasoDTO> set1 = new LinkedHashSet<PasoDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( Paso paso : set ) {
+            set1.add( pasoMapper.toDTO( paso ) );
+        }
+
+        return set1;
+    }
+
     protected Set<RecetaIngredienteDTO> recetaIngredienteSetToRecetaIngredienteDTOSet(Set<RecetaIngrediente> set) {
         if ( set == null ) {
             return null;
@@ -263,14 +285,70 @@ public class RecetaMapperImpl implements RecetaMapper {
         return set1;
     }
 
-    protected Set<CategoriaDTO> categoriaSetToCategoriaDTOSet(Set<Categoria> set) {
+    protected Calificacion calificacionDTOToCalificacion(CalificacionDTO calificacionDTO) {
+        if ( calificacionDTO == null ) {
+            return null;
+        }
+
+        Calificacion calificacion = new Calificacion();
+
+        calificacion.setFechaCalificacion( calificacionDTO.getFechaCalificacion() );
+        calificacion.setId( calificacionDTO.getId() );
+        calificacion.setPuntuacion( calificacionDTO.getPuntuacion() );
+        calificacion.setUsuario( usuarioMapper.toEntity( calificacionDTO.getUsuario() ) );
+
+        return calificacion;
+    }
+
+    protected Set<Calificacion> calificacionDTOSetToCalificacionSet(Set<CalificacionDTO> set) {
         if ( set == null ) {
             return null;
         }
 
-        Set<CategoriaDTO> set1 = new LinkedHashSet<CategoriaDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Categoria categoria : set ) {
-            set1.add( categoriaMapper.toDTO( categoria ) );
+        Set<Calificacion> set1 = new LinkedHashSet<Calificacion>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( CalificacionDTO calificacionDTO : set ) {
+            set1.add( calificacionDTOToCalificacion( calificacionDTO ) );
+        }
+
+        return set1;
+    }
+
+    protected Set<Categoria> categoriaDTOSetToCategoriaSet(Set<CategoriaDTO> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<Categoria> set1 = new LinkedHashSet<Categoria>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( CategoriaDTO categoriaDTO : set ) {
+            set1.add( categoriaMapper.toEntity( categoriaDTO ) );
+        }
+
+        return set1;
+    }
+
+    protected Comentario comentarioDTOToComentario(ComentarioDTO comentarioDTO) {
+        if ( comentarioDTO == null ) {
+            return null;
+        }
+
+        Comentario comentario = new Comentario();
+
+        comentario.setComentario( comentarioDTO.getComentario() );
+        comentario.setFechaComentario( comentarioDTO.getFechaComentario() );
+        comentario.setId( comentarioDTO.getId() );
+        comentario.setUsuario( usuarioMapper.toEntity( comentarioDTO.getUsuario() ) );
+
+        return comentario;
+    }
+
+    protected Set<Comentario> comentarioDTOSetToComentarioSet(Set<ComentarioDTO> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<Comentario> set1 = new LinkedHashSet<Comentario>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( ComentarioDTO comentarioDTO : set ) {
+            set1.add( comentarioDTOToComentario( comentarioDTO ) );
         }
 
         return set1;
@@ -289,62 +367,6 @@ public class RecetaMapperImpl implements RecetaMapper {
         return set1;
     }
 
-    protected Comentario comentarioDTOToComentario(ComentarioDTO comentarioDTO) {
-        if ( comentarioDTO == null ) {
-            return null;
-        }
-
-        Comentario comentario = new Comentario();
-
-        comentario.setId( comentarioDTO.getId() );
-        comentario.setUsuario( usuarioMapper.toEntity( comentarioDTO.getUsuario() ) );
-        comentario.setComentario( comentarioDTO.getComentario() );
-        comentario.setFechaComentario( comentarioDTO.getFechaComentario() );
-
-        return comentario;
-    }
-
-    protected Set<Comentario> comentarioDTOSetToComentarioSet(Set<ComentarioDTO> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<Comentario> set1 = new LinkedHashSet<Comentario>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( ComentarioDTO comentarioDTO : set ) {
-            set1.add( comentarioDTOToComentario( comentarioDTO ) );
-        }
-
-        return set1;
-    }
-
-    protected Calificacion calificacionDTOToCalificacion(CalificacionDTO calificacionDTO) {
-        if ( calificacionDTO == null ) {
-            return null;
-        }
-
-        Calificacion calificacion = new Calificacion();
-
-        calificacion.setId( calificacionDTO.getId() );
-        calificacion.setUsuario( usuarioMapper.toEntity( calificacionDTO.getUsuario() ) );
-        calificacion.setPuntuacion( calificacionDTO.getPuntuacion() );
-        calificacion.setFechaCalificacion( calificacionDTO.getFechaCalificacion() );
-
-        return calificacion;
-    }
-
-    protected Set<Calificacion> calificacionDTOSetToCalificacionSet(Set<CalificacionDTO> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<Calificacion> set1 = new LinkedHashSet<Calificacion>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( CalificacionDTO calificacionDTO : set ) {
-            set1.add( calificacionDTOToCalificacion( calificacionDTO ) );
-        }
-
-        return set1;
-    }
-
     protected Set<RecetaIngrediente> recetaIngredienteDTOSetToRecetaIngredienteSet(Set<RecetaIngredienteDTO> set) {
         if ( set == null ) {
             return null;
@@ -353,19 +375,6 @@ public class RecetaMapperImpl implements RecetaMapper {
         Set<RecetaIngrediente> set1 = new LinkedHashSet<RecetaIngrediente>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( RecetaIngredienteDTO recetaIngredienteDTO : set ) {
             set1.add( recetaIngredienteMapper.toEntity( recetaIngredienteDTO ) );
-        }
-
-        return set1;
-    }
-
-    protected Set<Categoria> categoriaDTOSetToCategoriaSet(Set<CategoriaDTO> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<Categoria> set1 = new LinkedHashSet<Categoria>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( CategoriaDTO categoriaDTO : set ) {
-            set1.add( categoriaMapper.toEntity( categoriaDTO ) );
         }
 
         return set1;

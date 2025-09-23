@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T11:53:03+0200",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
+    date = "2025-09-23T12:17:08+0200",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
 public class ComentarioMapperImpl implements ComentarioMapper {
@@ -27,9 +27,9 @@ public class ComentarioMapperImpl implements ComentarioMapper {
         ComentarioDTO comentarioDTO = new ComentarioDTO();
 
         comentarioDTO.setRecetaId( comentarioRecetaId( comentario ) );
-        comentarioDTO.setId( comentario.getId() );
         comentarioDTO.setComentario( comentario.getComentario() );
         comentarioDTO.setFechaComentario( comentario.getFechaComentario() );
+        comentarioDTO.setId( comentario.getId() );
         comentarioDTO.setUsuario( usuarioMapper.toDTO( comentario.getUsuario() ) );
 
         return comentarioDTO;
@@ -43,10 +43,10 @@ public class ComentarioMapperImpl implements ComentarioMapper {
 
         Comentario comentario = new Comentario();
 
-        comentario.setId( comentarioDTO.getId() );
-        comentario.setUsuario( usuarioMapper.toEntity( comentarioDTO.getUsuario() ) );
         comentario.setComentario( comentarioDTO.getComentario() );
         comentario.setFechaComentario( comentarioDTO.getFechaComentario() );
+        comentario.setId( comentarioDTO.getId() );
+        comentario.setUsuario( usuarioMapper.toEntity( comentarioDTO.getUsuario() ) );
 
         comentario.setReceta( comentarioDTO.getRecetaId() != null ? new com.library.recetas.model.Receta(comentarioDTO.getRecetaId()) : null );
 

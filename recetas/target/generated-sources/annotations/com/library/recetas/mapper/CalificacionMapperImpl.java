@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T11:53:03+0200",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
+    date = "2025-09-23T12:17:08+0200",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
 public class CalificacionMapperImpl implements CalificacionMapper {
@@ -27,9 +27,9 @@ public class CalificacionMapperImpl implements CalificacionMapper {
         CalificacionDTO calificacionDTO = new CalificacionDTO();
 
         calificacionDTO.setRecetaId( calificacionRecetaId( calificacion ) );
+        calificacionDTO.setFechaCalificacion( calificacion.getFechaCalificacion() );
         calificacionDTO.setId( calificacion.getId() );
         calificacionDTO.setPuntuacion( calificacion.getPuntuacion() );
-        calificacionDTO.setFechaCalificacion( calificacion.getFechaCalificacion() );
         calificacionDTO.setUsuario( usuarioMapper.toDTO( calificacion.getUsuario() ) );
 
         return calificacionDTO;
@@ -43,10 +43,10 @@ public class CalificacionMapperImpl implements CalificacionMapper {
 
         Calificacion calificacion = new Calificacion();
 
-        calificacion.setId( calificacionDTO.getId() );
-        calificacion.setUsuario( usuarioMapper.toEntity( calificacionDTO.getUsuario() ) );
-        calificacion.setPuntuacion( calificacionDTO.getPuntuacion() );
         calificacion.setFechaCalificacion( calificacionDTO.getFechaCalificacion() );
+        calificacion.setId( calificacionDTO.getId() );
+        calificacion.setPuntuacion( calificacionDTO.getPuntuacion() );
+        calificacion.setUsuario( usuarioMapper.toEntity( calificacionDTO.getUsuario() ) );
 
         calificacion.setReceta( calificacionDTO.getRecetaId() != null ? new com.library.recetas.model.Receta(calificacionDTO.getRecetaId()) : null );
 

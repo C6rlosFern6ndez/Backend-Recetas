@@ -6,20 +6,20 @@ import com.library.recetas.dto.UsuarioDTO;
 import com.library.recetas.mapper.UsuarioMapper;
 import com.library.recetas.exception.ResourceNotFoundException;
 import com.library.recetas.exception.DuplicateResourceException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private UsuarioMapper usuarioMapper;
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioMapper usuarioMapper;
 
     public List<UsuarioDTO> findAll() {
         return usuarioRepository.findAll().stream()
@@ -34,16 +34,10 @@ public class UsuarioService {
     }
 
     public UsuarioDTO save(UsuarioDTO usuarioDTO) {
-        if (usuarioDTO.getId() != null && usuarioRepository.existsById(usuarioDTO.getId())) {
-            throw new DuplicateResourceException("Usuario", "id", usuarioDTO.getId());
-        }
-        if (usuarioRepository.findByNombreUsuario(usuarioDTO.getNombreUsuario()).isPresent()) {
-            throw new DuplicateResourceException("Usuario", "nombreUsuario", usuarioDTO.getNombreUsuario());
-        }
-        if (usuarioRepository.findByEmail(usuarioDTO.getEmail()).isPresent()) {
-            throw new DuplicateResourceException("Usuario", "email", usuarioDTO.getEmail());
-        }
+        validateUniqueFields(usuarioDTO);
         Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
+        // La contraseña debería ser codificada aquí antes de guardar
+        // usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         return usuarioMapper.toDTO(usuarioRepository.save(usuario));
     }
 
@@ -51,19 +45,10 @@ public class UsuarioService {
         Usuario existingUsuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", id));
 
-        if (!existingUsuario.getNombreUsuario().equals(usuarioDTO.getNombreUsuario()) &&
-            usuarioRepository.findByNombreUsuario(usuarioDTO.getNombreUsuario()).isPresent()) {
-            throw new DuplicateResourceException("Usuario", "nombreUsuario", usuarioDTO.getNombreUsuario());
-        }
-        if (!existingUsuario.getEmail().equals(usuarioDTO.getEmail()) &&
-            usuarioRepository.findByEmail(usuarioDTO.getEmail()).isPresent()) {
-            throw new DuplicateResourceException("Usuario", "email", usuarioDTO.getEmail());
-        }
+        validateUniqueFields(usuarioDTO, existingUsuario);
 
-        existingUsuario.setNombreUsuario(usuarioDTO.getNombreUsuario());
-        existingUsuario.setEmail(usuarioDTO.getEmail());
-        // No actualizamos la fecha de registro aquí, ya que es una fecha de creación.
-        // Si hubiera otros campos actualizables, se harían aquí.
+        // Mapear los campos actualizables del DTO a la entidad existente
+        usuarioMapper.updateEntityFromDto(usuarioDTO, existingUsuario);
 
         return usuarioMapper.toDTO(usuarioRepository.save(existingUsuario));
     }
@@ -73,5 +58,27 @@ public class UsuarioService {
             throw new ResourceNotFoundException("Usuario", "id", id);
         }
         usuarioRepository.deleteById(id);
+    }
+
+    private void validateUniqueFields(UsuarioDTO usuarioDTO, Usuario existingUsuario) {
+        if (!existingUsuario.getNombreUsuario().equals(usuarioDTO.getNombreUsuario())) {
+            usuarioRepository.findByNombreUsuario(usuarioDTO.getNombreUsuario()).ifPresent(u -> {
+                throw new DuplicateResourceException("Usuario", "nombreUsuario", usuarioDTO.getNombreUsuario());
+            });
+        }
+        if (!existingUsuario.getEmail().equals(usuarioDTO.getEmail())) {
+            usuarioRepository.findByEmail(usuarioDTO.getEmail()).ifPresent(u -> {
+                throw new DuplicateResourceException("Usuario", "email", usuarioDTO.getEmail());
+            });
+        }
+    }
+
+    private void validateUniqueFields(UsuarioDTO usuarioDTO) {
+        usuarioRepository.findByNombreUsuario(usuarioDTO.getNombreUsuario()).ifPresent(u -> {
+            throw new DuplicateResourceException("Usuario", "nombreUsuario", usuarioDTO.getNombreUsuario());
+        });
+        usuarioRepository.findByEmail(usuarioDTO.getEmail()).ifPresent(u -> {
+            throw new DuplicateResourceException("Usuario", "email", usuarioDTO.getEmail());
+        });
     }
 }
