@@ -3,7 +3,6 @@ package com.library.recetas.mapper;
 import com.library.recetas.dto.IngredienteDTO;
 import com.library.recetas.model.Ingrediente;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface IngredienteMapper {
