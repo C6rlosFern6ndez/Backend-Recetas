@@ -8,11 +8,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {UsuarioMapper.class, RecetaMapper.class})
 public interface ComentarioMapper {
 
-    @Mapping(source = "usuario", target = "usuario")
     @Mapping(source = "receta.id", target = "recetaId")
     ComentarioDTO toDTO(Comentario comentario);
 
-    @Mapping(source = "usuario", target = "usuario")
-    @Mapping(target = "receta", expression = "java(new Receta(recetaId))")
+    @Mapping(target = "receta", expression = "java(comentarioDTO.getRecetaId() != null ? new com.library.recetas.model.Receta(comentarioDTO.getRecetaId()) : null)")
     Comentario toEntity(ComentarioDTO comentarioDTO);
 }

@@ -11,6 +11,28 @@ Este es el backend de una aplicación de recetas, desarrollado con Spring Boot. 
 *   **Documentación API**: Springdoc OpenAPI (integrado con Swagger UI) para generar documentación interactiva de los endpoints de la API.
 *   **Base de Datos**: MySQL. La configuración de conexión se encuentra en `application.properties` (o `application.yml`), y los scripts SQL para la estructura de la base de datos están en la carpeta `DataBase/`.
 
+## Seguridad y Autenticación (JWT)
+
+La aplicación implementa un sistema de autenticación y autorización basado en JSON Web Tokens (JWT) utilizando Spring Security.
+
+*   **Spring Security**: Proporciona la base para la seguridad de la aplicación, manejando la autenticación y la autorización de las solicitudes.
+*   **JWT (JSON Web Tokens)**: Se utilizan para la autenticación sin estado. Cuando un usuario inicia sesión, se genera un JWT que se envía al cliente. Este token se incluye en las solicitudes posteriores para verificar la identidad del usuario y sus permisos.
+
+### Componentes Clave de Seguridad:
+
+*   `JwtUtil.java`: Clase de utilidad para la generación, validación y extracción de información de los JWTs. Contiene la lógica para firmar y verificar los tokens.
+*   `JwtAuthenticationFilter.java`: Un filtro de Spring Security que intercepta las solicitudes HTTP, extrae el JWT del encabezado de autorización y valida el token. Si el token es válido, autentica al usuario en el contexto de seguridad de Spring.
+*   `SecurityConfig.java`: Clase de configuración principal de Spring Security. Define las reglas de autorización para los diferentes endpoints (qué roles pueden acceder a qué rutas), configura el proveedor de autenticación y añade el `JwtAuthenticationFilter` a la cadena de filtros de seguridad.
+*   `AuthController.java`: Controlador REST que maneja las solicitudes de registro (`/auth/register`) e inicio de sesión (`/auth/authenticate`), generando y devolviendo JWTs a los usuarios autenticados.
+
+### Flujo de Autenticación:
+
+1.  **Registro/Login**: Un usuario envía sus credenciales (nombre de usuario y contraseña) al endpoint `/auth/register` o `/auth/authenticate`.
+2.  **Generación de JWT**: Si las credenciales son válidas, la aplicación genera un JWT utilizando `JwtUtil` y lo devuelve al cliente.
+3.  **Acceso a Recursos Protegidos**: El cliente incluye el JWT en el encabezado `Authorization` (como `Bearer <token>`) de las solicitudes a los endpoints protegidos.
+4.  **Validación del JWT**: El `JwtAuthenticationFilter` intercepta la solicitud, extrae y valida el JWT.
+5.  **Autorización**: Spring Security verifica si el usuario autenticado (basado en el JWT) tiene los permisos necesarios para acceder al recurso solicitado, según las reglas definidas en `SecurityConfig`.
+
 ## Estructura del Proyecto
 
 El proyecto sigue una arquitectura en capas típica de Spring Boot, donde cada paquete tiene una responsabilidad específica:
@@ -46,7 +68,7 @@ La aplicación está configurada para usar una base de datos MySQL. Los detalles
 
 ## Documentación de la API (Swagger UI)
 
-La integración de Springdoc OpenAPI genera automáticamente documentación interactiva para la API. Para acceder a ella, ejecuta la aplicación y navega a la ruta `/swagger-ui.html` (ej. `http://localhost:8080/swagger-ui.html`). Podrás ver todos los endpoints disponibles, sus parámetros, y probarlos directamente desde la interfaz, lo cual es muy útil para entender y consumir la API.
+La integración de Springdoc OpenAPI genera automáticamente documentación interactiva para la API. Para acceder a ella, ejecuta la aplicación y navega a la ruta `/swagger-ui.html` (ej. `http://localhost:8081/swagger-ui.html`). Podrás ver todos los endpoints disponibles, sus parámetros, y probarlos directamente desde la interfaz, lo cual es muy útil para entender y consumir la API.
 
 ## Cómo Ejecutar la Aplicación
 
@@ -57,11 +79,11 @@ La integración de Springdoc OpenAPI genera automáticamente documentación inte
     *   Configurar las credenciales de la base de datos en `src/main/resources/application.properties` (o `application.yml`).
 
 2.  **Compilar y Ejecutar con Maven**:
-    Desde la raíz del proyecto (`d:\PROYECTOS\Backend-Recetas`), ejecuta el siguiente comando en la terminal:
+    Desde la raíz del proyecto (`d:\PROYECTOS\Backend-Recetas\recetas`), ejecuta el siguiente comando en la terminal:
     ```bash
     mvn clean install
     mvn spring-boot:run
     ```
     Alternativamente, puedes ejecutar la clase `App.java` directamente desde tu IDE.
 
-3.  **Acceder a la API**: Una vez que la aplicación esté en ejecución, los endpoints estarán disponibles en `http://localhost:8080` (o el puerto configurado en `application.properties`).
+3.  **Acceder a la API**: Una vez que la aplicación esté en ejecución, los endpoints estarán disponibles en `http://localhost:8081` (o el puerto configurado en `application.properties`).

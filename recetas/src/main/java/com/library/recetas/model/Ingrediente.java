@@ -24,6 +24,10 @@ public class Ingrediente {
         this.nombre = nombre;
     }
 
+    public Ingrediente(Integer id) { // Constructor añadido
+        this.id = id;
+    }
+
     // Getters y Setters
     public Integer getId() {
         return id;

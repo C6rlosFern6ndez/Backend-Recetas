@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T08:15:19+0200",
-    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
+    date = "2025-09-23T10:58:31+0200",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
 )
 @Component
 public class RecetaIngredienteMapperImpl implements RecetaIngredienteMapper {
@@ -29,8 +29,8 @@ public class RecetaIngredienteMapperImpl implements RecetaIngredienteMapper {
 
         recetaIngredienteDTO.setRecetaId( recetaIngredienteRecetaId( recetaIngrediente ) );
         recetaIngredienteDTO.setIngredienteId( recetaIngredienteIngredienteId( recetaIngrediente ) );
-        recetaIngredienteDTO.setIngrediente( ingredienteMapper.toDTO( recetaIngrediente.getIngrediente() ) );
         recetaIngredienteDTO.setCantidad( recetaIngrediente.getCantidad() );
+        recetaIngredienteDTO.setIngrediente( ingredienteMapper.toDTO( recetaIngrediente.getIngrediente() ) );
 
         return recetaIngredienteDTO;
     }
@@ -43,10 +43,11 @@ public class RecetaIngredienteMapperImpl implements RecetaIngredienteMapper {
 
         RecetaIngrediente recetaIngrediente = new RecetaIngrediente();
 
-        recetaIngrediente.setReceta( recetaIngredienteDTOToReceta( recetaIngredienteDTO ) );
-        recetaIngrediente.setIngrediente( recetaIngredienteDTOToIngrediente( recetaIngredienteDTO ) );
         recetaIngrediente.setId( recetaIngredienteDTOToRecetaIngredienteId( recetaIngredienteDTO ) );
         recetaIngrediente.setCantidad( recetaIngredienteDTO.getCantidad() );
+
+        recetaIngrediente.setReceta( recetaIngredienteDTO.getRecetaId() != null ? new com.library.recetas.model.Receta(recetaIngredienteDTO.getRecetaId()) : null );
+        recetaIngrediente.setIngrediente( recetaIngredienteDTO.getIngredienteId() != null ? new com.library.recetas.model.Ingrediente(recetaIngredienteDTO.getIngredienteId()) : null );
 
         return recetaIngrediente;
     }
@@ -79,30 +80,6 @@ public class RecetaIngredienteMapperImpl implements RecetaIngredienteMapper {
             return null;
         }
         return id;
-    }
-
-    protected Receta recetaIngredienteDTOToReceta(RecetaIngredienteDTO recetaIngredienteDTO) {
-        if ( recetaIngredienteDTO == null ) {
-            return null;
-        }
-
-        Receta receta = new Receta();
-
-        receta.setId( recetaIngredienteDTO.getRecetaId() );
-
-        return receta;
-    }
-
-    protected Ingrediente recetaIngredienteDTOToIngrediente(RecetaIngredienteDTO recetaIngredienteDTO) {
-        if ( recetaIngredienteDTO == null ) {
-            return null;
-        }
-
-        Ingrediente ingrediente = new Ingrediente();
-
-        ingrediente.setId( recetaIngredienteDTO.getIngredienteId() );
-
-        return ingrediente;
     }
 
     protected RecetaIngrediente.RecetaIngredienteId recetaIngredienteDTOToRecetaIngredienteId(RecetaIngredienteDTO recetaIngredienteDTO) {

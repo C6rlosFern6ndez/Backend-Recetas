@@ -66,6 +66,10 @@ public class Receta {
     public Receta() {
     }
 
+    public Receta(Integer id) {
+        this.id = id;
+    }
+
     public Receta(String titulo, String descripcion, Integer tiempoPreparacion, Dificultad dificultad, Integer porciones, Usuario usuario) {
         this.titulo = titulo;
         this.descripcion = descripcion;

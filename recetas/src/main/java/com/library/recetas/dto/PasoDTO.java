@@ -4,14 +4,16 @@ public class PasoDTO {
     private Integer id;
     private Integer orden;
     private String descripcion;
+    private Integer recetaId; // Added for mapping
 
     public PasoDTO() {
     }
 
-    public PasoDTO(Integer id, Integer orden, String descripcion) {
+    public PasoDTO(Integer id, Integer orden, String descripcion, Integer recetaId) {
         this.id = id;
         this.orden = orden;
         this.descripcion = descripcion;
+        this.recetaId = recetaId;
     }
 
     // Getters y Setters
@@ -37,5 +39,13 @@ public class PasoDTO {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Integer getRecetaId() {
+        return recetaId;
+    }
+
+    public void setRecetaId(Integer recetaId) {
+        this.recetaId = recetaId;
     }
 }

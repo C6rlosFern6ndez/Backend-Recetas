@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T08:20:26+0200",
-    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
+    date = "2025-09-23T10:58:31+0200",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
 )
 @Component
 public class CalificacionMapperImpl implements CalificacionMapper {
@@ -26,11 +26,11 @@ public class CalificacionMapperImpl implements CalificacionMapper {
 
         CalificacionDTO calificacionDTO = new CalificacionDTO();
 
-        calificacionDTO.setUsuario( usuarioMapper.toDTO( calificacion.getUsuario() ) );
         calificacionDTO.setRecetaId( calificacionRecetaId( calificacion ) );
-        calificacionDTO.setFechaCalificacion( calificacion.getFechaCalificacion() );
         calificacionDTO.setId( calificacion.getId() );
         calificacionDTO.setPuntuacion( calificacion.getPuntuacion() );
+        calificacionDTO.setFechaCalificacion( calificacion.getFechaCalificacion() );
+        calificacionDTO.setUsuario( usuarioMapper.toDTO( calificacion.getUsuario() ) );
 
         return calificacionDTO;
     }
@@ -43,11 +43,12 @@ public class CalificacionMapperImpl implements CalificacionMapper {
 
         Calificacion calificacion = new Calificacion();
 
-        calificacion.setReceta( calificacionDTOToReceta( calificacionDTO ) );
-        calificacion.setUsuario( usuarioMapper.toEntity( calificacionDTO.getUsuario() ) );
-        calificacion.setFechaCalificacion( calificacionDTO.getFechaCalificacion() );
         calificacion.setId( calificacionDTO.getId() );
+        calificacion.setUsuario( usuarioMapper.toEntity( calificacionDTO.getUsuario() ) );
         calificacion.setPuntuacion( calificacionDTO.getPuntuacion() );
+        calificacion.setFechaCalificacion( calificacionDTO.getFechaCalificacion() );
+
+        calificacion.setReceta( calificacionDTO.getRecetaId() != null ? new com.library.recetas.model.Receta(calificacionDTO.getRecetaId()) : null );
 
         return calificacion;
     }
@@ -65,17 +66,5 @@ public class CalificacionMapperImpl implements CalificacionMapper {
             return null;
         }
         return id;
-    }
-
-    protected Receta calificacionDTOToReceta(CalificacionDTO calificacionDTO) {
-        if ( calificacionDTO == null ) {
-            return null;
-        }
-
-        Receta receta = new Receta();
-
-        receta.setId( calificacionDTO.getRecetaId() );
-
-        return receta;
     }
 }

@@ -29,4 +29,10 @@ public class RecetaService {
     public void deleteById(Integer id) {
         recetaRepository.deleteById(id);
     }
+
+    public boolean isOwner(Integer recetaId, Integer userId) {
+        return recetaRepository.findById(recetaId)
+                .map(receta -> receta.getUsuario().getId().equals(userId))
+                .orElse(false);
+    }
 }

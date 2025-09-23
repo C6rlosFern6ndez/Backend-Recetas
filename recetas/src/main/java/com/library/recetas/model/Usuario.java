@@ -2,12 +2,22 @@ package com.library.recetas.model;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+@Getter
+@Setter
+public class Usuario implements UserDetails { // Implementar UserDetails
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +57,7 @@ public class Usuario {
         this.fechaRegistro = LocalDateTime.now();
     }
 
-    // Getters y Setters
+    // Getters y Setters (existentes)
     public Integer getId() {
         return id;
     }
@@ -110,5 +120,42 @@ public class Usuario {
 
     public void setCalificaciones(Set<Calificacion> calificaciones) {
         this.calificaciones = calificaciones;
+    }
+
+    // Métodos de UserDetails
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Por ahora, asignamos un rol fijo. En una aplicación real, esto vendría de la base de datos.
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return contrasena;
+    }
+
+    @Override
+    public String getUsername() {
+        return email; // Usamos el email como nombre de usuario para Spring Security
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
