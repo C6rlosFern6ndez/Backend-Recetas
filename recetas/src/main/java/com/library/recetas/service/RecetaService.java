@@ -5,7 +5,9 @@ import com.library.recetas.exception.ResourceNotFoundException;
 import com.library.recetas.mapper.RecetaMapper;
 import com.library.recetas.model.Receta;
 import com.library.recetas.repository.RecetaRepository;
+import com.library.recetas.model.Usuario;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +36,9 @@ public class RecetaService {
     }
 
     public RecetaDTO save(RecetaDTO recetaDTO) {
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Receta receta = recetaMapper.toEntity(recetaDTO);
-        // Aquí se podría asignar el usuario autenticado a la receta
+        receta.setUsuario(usuario);
         return recetaMapper.toDTO(recetaRepository.save(receta));
     }
 
