@@ -19,7 +19,7 @@ public class RecetaService {
     }
 
     public Optional<Receta> findById(Integer id) {
-        return recetaRepository.findById(id);
+        return recetaRepository.findRecetaWithDetailsById(id);
     }
 
     public Receta save(Receta receta) {

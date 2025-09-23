@@ -6,6 +6,7 @@ public class ComentarioDTO {
     private Integer id;
     private String comentario;
     private LocalDateTime fechaComentario;
+    private Integer recetaId; // Added to map from Receta entity
     private UsuarioDTO usuario; // Referencia al DTO del usuario
 
     public ComentarioDTO() {
@@ -41,6 +42,14 @@ public class ComentarioDTO {
 
     public void setFechaComentario(LocalDateTime fechaComentario) {
         this.fechaComentario = fechaComentario;
+    }
+
+    public Integer getRecetaId() {
+        return recetaId;
+    }
+
+    public void setRecetaId(Integer recetaId) {
+        this.recetaId = recetaId;
     }
 
     public UsuarioDTO getUsuario() {

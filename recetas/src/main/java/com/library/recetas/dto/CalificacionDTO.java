@@ -6,6 +6,7 @@ public class CalificacionDTO {
     private Integer id;
     private Integer puntuacion;
     private LocalDateTime fechaCalificacion;
+    private Integer recetaId; // Added to map from Receta entity
     private UsuarioDTO usuario; // Referencia al DTO del usuario
 
     public CalificacionDTO() {
@@ -45,6 +46,14 @@ public class CalificacionDTO {
 
     public UsuarioDTO getUsuario() {
         return usuario;
+    }
+
+    public Integer getRecetaId() {
+        return recetaId;
+    }
+
+    public void setRecetaId(Integer recetaId) {
+        this.recetaId = recetaId;
     }
 
     public void setUsuario(UsuarioDTO usuario) {
