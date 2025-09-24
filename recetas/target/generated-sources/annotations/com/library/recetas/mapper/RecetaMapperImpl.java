@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-23T13:12:41+0200",
+    date = "2025-09-24T13:18:30+0200",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
@@ -36,6 +36,10 @@ public class RecetaMapperImpl implements RecetaMapper {
     private PasoMapper pasoMapper;
     @Autowired
     private RecetaIngredienteMapper recetaIngredienteMapper;
+    @Autowired
+    private ComentarioMapper comentarioMapper;
+    @Autowired
+    private CalificacionMapper calificacionMapper;
 
     @Override
     public RecetaDTO toDTO(Receta receta) {
@@ -196,21 +200,6 @@ public class RecetaMapperImpl implements RecetaMapper {
         return receta;
     }
 
-    protected CalificacionDTO calificacionToCalificacionDTO(Calificacion calificacion) {
-        if ( calificacion == null ) {
-            return null;
-        }
-
-        CalificacionDTO calificacionDTO = new CalificacionDTO();
-
-        calificacionDTO.setFechaCalificacion( calificacion.getFechaCalificacion() );
-        calificacionDTO.setId( calificacion.getId() );
-        calificacionDTO.setPuntuacion( calificacion.getPuntuacion() );
-        calificacionDTO.setUsuario( usuarioMapper.toDTO( calificacion.getUsuario() ) );
-
-        return calificacionDTO;
-    }
-
     protected Set<CalificacionDTO> calificacionSetToCalificacionDTOSet(Set<Calificacion> set) {
         if ( set == null ) {
             return null;
@@ -218,7 +207,7 @@ public class RecetaMapperImpl implements RecetaMapper {
 
         Set<CalificacionDTO> set1 = new LinkedHashSet<CalificacionDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( Calificacion calificacion : set ) {
-            set1.add( calificacionToCalificacionDTO( calificacion ) );
+            set1.add( calificacionMapper.toDTO( calificacion ) );
         }
 
         return set1;
@@ -237,21 +226,6 @@ public class RecetaMapperImpl implements RecetaMapper {
         return set1;
     }
 
-    protected ComentarioDTO comentarioToComentarioDTO(Comentario comentario) {
-        if ( comentario == null ) {
-            return null;
-        }
-
-        ComentarioDTO comentarioDTO = new ComentarioDTO();
-
-        comentarioDTO.setComentario( comentario.getComentario() );
-        comentarioDTO.setFechaComentario( comentario.getFechaComentario() );
-        comentarioDTO.setId( comentario.getId() );
-        comentarioDTO.setUsuario( usuarioMapper.toDTO( comentario.getUsuario() ) );
-
-        return comentarioDTO;
-    }
-
     protected Set<ComentarioDTO> comentarioSetToComentarioDTOSet(Set<Comentario> set) {
         if ( set == null ) {
             return null;
@@ -259,7 +233,7 @@ public class RecetaMapperImpl implements RecetaMapper {
 
         Set<ComentarioDTO> set1 = new LinkedHashSet<ComentarioDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( Comentario comentario : set ) {
-            set1.add( comentarioToComentarioDTO( comentario ) );
+            set1.add( comentarioMapper.toDTO( comentario ) );
         }
 
         return set1;
@@ -304,21 +278,6 @@ public class RecetaMapperImpl implements RecetaMapper {
         return set1;
     }
 
-    protected Comentario comentarioDTOToComentario(ComentarioDTO comentarioDTO) {
-        if ( comentarioDTO == null ) {
-            return null;
-        }
-
-        Comentario comentario = new Comentario();
-
-        comentario.setId( comentarioDTO.getId() );
-        comentario.setUsuario( usuarioMapper.toEntity( comentarioDTO.getUsuario() ) );
-        comentario.setComentario( comentarioDTO.getComentario() );
-        comentario.setFechaComentario( comentarioDTO.getFechaComentario() );
-
-        return comentario;
-    }
-
     protected Set<Comentario> comentarioDTOSetToComentarioSet(Set<ComentarioDTO> set) {
         if ( set == null ) {
             return null;
@@ -326,25 +285,10 @@ public class RecetaMapperImpl implements RecetaMapper {
 
         Set<Comentario> set1 = new LinkedHashSet<Comentario>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( ComentarioDTO comentarioDTO : set ) {
-            set1.add( comentarioDTOToComentario( comentarioDTO ) );
+            set1.add( comentarioMapper.toEntity( comentarioDTO ) );
         }
 
         return set1;
-    }
-
-    protected Calificacion calificacionDTOToCalificacion(CalificacionDTO calificacionDTO) {
-        if ( calificacionDTO == null ) {
-            return null;
-        }
-
-        Calificacion calificacion = new Calificacion();
-
-        calificacion.setId( calificacionDTO.getId() );
-        calificacion.setUsuario( usuarioMapper.toEntity( calificacionDTO.getUsuario() ) );
-        calificacion.setPuntuacion( calificacionDTO.getPuntuacion() );
-        calificacion.setFechaCalificacion( calificacionDTO.getFechaCalificacion() );
-
-        return calificacion;
     }
 
     protected Set<Calificacion> calificacionDTOSetToCalificacionSet(Set<CalificacionDTO> set) {
@@ -354,7 +298,7 @@ public class RecetaMapperImpl implements RecetaMapper {
 
         Set<Calificacion> set1 = new LinkedHashSet<Calificacion>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( CalificacionDTO calificacionDTO : set ) {
-            set1.add( calificacionDTOToCalificacion( calificacionDTO ) );
+            set1.add( calificacionMapper.toEntity( calificacionDTO ) );
         }
 
         return set1;

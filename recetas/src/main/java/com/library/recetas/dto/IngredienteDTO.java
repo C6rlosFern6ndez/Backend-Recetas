@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class IngredienteDTO {
     private Integer id;
     private String nombre;
-    private Integer recetaId;
+    private Set<RecetaIngredienteDTO> recetaIngredientes;
 }

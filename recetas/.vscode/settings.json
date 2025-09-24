@@ -1,0 +1,6 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.jdt.ls.vmargs": "-noverify -Xmx1G -XX:+UseG1GC -XX:+UseStringDeduplication -javaagent:\"c:\\Users\\noBody\\.m2\\repository\\org\\projectlombok\\lombok\\1.18.30\\lombok-1.18.30.jar\"",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.inlayHints.parameterNames.enabled": "none"
+}

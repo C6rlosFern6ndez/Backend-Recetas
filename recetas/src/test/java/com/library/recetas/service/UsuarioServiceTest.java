@@ -90,4 +90,89 @@ class UsuarioServiceTest {
         });
         verify(usuarioRepository, times(1)).findById(1);
     }
+
+    @Test
+    void testSave_Success() {
+        // Arrange
+        UsuarioDTO newUserDTO = new UsuarioDTO();
+        newUserDTO.setNombreUsuario("newuser");
+        newUserDTO.setEmail("new@example.com");
+
+        Usuario newUser = new Usuario();
+        newUser.setId(2); // Assuming ID is assigned upon save
+        newUser.setNombreUsuario("newuser");
+        newUser.setEmail("new@example.com");
+
+        UsuarioDTO savedUserDTO = new UsuarioDTO();
+        savedUserDTO.setId(2);
+        savedUserDTO.setNombreUsuario("newuser");
+        savedUserDTO.setEmail("new@example.com");
+
+        when(usuarioMapper.toEntity(any(UsuarioDTO.class))).thenReturn(newUser);
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(newUser);
+        when(usuarioMapper.toDTO(any(Usuario.class))).thenReturn(savedUserDTO);
+
+        // Act
+        UsuarioDTO result = usuarioService.save(newUserDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(savedUserDTO.getId(), result.getId());
+        assertEquals(savedUserDTO.getNombreUsuario(), result.getNombreUsuario());
+        verify(usuarioMapper, times(1)).toEntity(newUserDTO);
+        verify(usuarioRepository, times(1)).save(any(Usuario.class));
+        verify(usuarioMapper, times(1)).toDTO(newUser);
+    }
+
+    @Test
+    void testUpdate_Success() {
+        // Arrange
+        UsuarioDTO updatedUserDTO = new UsuarioDTO();
+        updatedUserDTO.setId(1);
+        updatedUserDTO.setNombreUsuario("updateduser");
+        updatedUserDTO.setEmail("updated@example.com");
+
+        Usuario updatedUser = new Usuario();
+        updatedUser.setId(1);
+        updatedUser.setNombreUsuario("updateduser");
+        updatedUser.setEmail("updated@example.com");
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+        when(usuarioMapper.toEntity(any(UsuarioDTO.class))).thenReturn(updatedUser);
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(updatedUser);
+        when(usuarioMapper.toDTO(any(Usuario.class))).thenReturn(updatedUserDTO);
+
+        // Act
+        UsuarioDTO result = usuarioService.update(1, updatedUserDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(updatedUserDTO.getId(), result.getId());
+        assertEquals(updatedUserDTO.getNombreUsuario(), result.getNombreUsuario());
+        verify(usuarioRepository, times(1)).findById(1);
+        verify(usuarioMapper, times(1)).toEntity(updatedUserDTO);
+        verify(usuarioRepository, times(1)).save(any(Usuario.class));
+        verify(usuarioMapper, times(1)).toDTO(updatedUser);
+    }
+
+    @Test
+    void testUpdate_NotFound() {
+        // Arrange
+        UsuarioDTO updatedUserDTO = new UsuarioDTO();
+        updatedUserDTO.setId(1);
+        updatedUserDTO.setNombreUsuario("updateduser");
+        updatedUserDTO.setEmail("updated@example.com");
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> {
+            usuarioService.update(1, updatedUserDTO);
+        });
+        verify(usuarioRepository, times(1)).findById(1);
+        verify(usuarioMapper, never()).toEntity(any(UsuarioDTO.class));
+        verify(usuarioRepository, never()).save(any(Usuario.class));
+        verify(usuarioMapper, never()).toDTO(any(Usuario.class));
+    }
+
 }

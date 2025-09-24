@@ -8,7 +8,7 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {UsuarioMapper.class, CategoriaMapper.class, PasoMapper.class, RecetaIngredienteMapper.class})
+@Mapper(componentModel = "spring", uses = {UsuarioMapper.class, CategoriaMapper.class, PasoMapper.class, RecetaIngredienteMapper.class, ComentarioMapper.class, CalificacionMapper.class})
 public interface RecetaMapper {
 
     RecetaDTO toDTO(Receta receta);
