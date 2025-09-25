@@ -3,4 +3,15 @@ Basado en el propósito de la aplicación (recetas),
 se podrían implementar nuevas características como:
 
 - Mejoras en la gestión de perfiles de usuario.
+
+    - Integrar un servicio de envío de correos electrónicos para notificar a los usuarios sobre el restablecimiento de contraseña y la verificación de email.
+
+    - Implementar la verificación de correo electrónico para nuevos registros.
+
+    - Considerar la implementación de un sistema de roles más granular si es necesario.
+
+    - Asegurar que la configuración de seguridad (ej. `SecurityConfig`) maneje adecumente el acceso a los endpoints de restablecimiento de contraseña y carga de imágenes.
+
+    
+
 - Implementación de un sistema de notificaciones.

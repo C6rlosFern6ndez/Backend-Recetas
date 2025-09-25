@@ -6,14 +6,12 @@ import com.library.recetas.dto.RegisterRequest;
 import com.library.recetas.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * Controlador REST para manejar las operaciones de autenticación y registro.
- * Proporciona endpoints para el registro de nuevos usuarios y la autenticación de usuarios existentes.
+ * Controlador REST para manejar las operaciones de autenticación, registro, restablecimiento de contraseña y verificación de email.
+ * Proporciona endpoints para el registro de nuevos usuarios, la autenticación de usuarios existentes,
+ * la solicitud de restablecimiento de contraseña, el restablecimiento de la misma, y la verificación de email.
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -47,5 +45,72 @@ public class AuthController {
             @RequestBody AuthRequest request
     ) {
         return ResponseEntity.ok(authService.authenticate(request));
+    }
+
+    /**
+     * Endpoint para solicitar el restablecimiento de contraseña.
+     * Recibe el correo electrónico del usuario y llama al servicio para iniciar el proceso de restablecimiento.
+     * @param email El correo electrónico del usuario.
+     * @return ResponseEntity con un mensaje de éxito o error.
+     */
+    @PostMapping("/request-password-reset")
+    public ResponseEntity<String> requestPasswordReset(@RequestParam String email) {
+        try {
+            authService.requestPasswordReset(email);
+            return ResponseEntity.ok("Password reset request submitted. Check your email for instructions.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint para restablecer la contraseña de un usuario.
+     * Recibe el token de restablecimiento y la nueva contraseña.
+     * @param token El token de restablecimiento de contraseña.
+     * @param newPassword La nueva contraseña.
+     * @return ResponseEntity con un mensaje de éxito o error.
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(
+            @RequestParam String token,
+            @RequestParam String newPassword) {
+        try {
+            authService.resetPassword(token, newPassword);
+            return ResponseEntity.ok("Password reset successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint para solicitar la verificación del correo electrónico.
+     * Recibe el correo electrónico del usuario y llama al servicio para iniciar el proceso de verificación.
+     * @param email El correo electrónico del usuario.
+     * @return ResponseEntity con un mensaje de éxito o error.
+     */
+    @PostMapping("/request-email-verification")
+    public ResponseEntity<String> requestEmailVerification(@RequestParam String email) {
+        try {
+            authService.requestEmailVerification(email);
+            return ResponseEntity.ok("Email verification request submitted. Check your email for instructions.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint para verificar el correo electrónico de un usuario.
+     * Recibe el token de verificación.
+     * @param token El token de verificación de correo electrónico.
+     * @return ResponseEntity con un mensaje de éxito o error.
+     */
+    @GetMapping("/verify-email")
+    public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+        try {
+            authService.verifyEmail(token);
+            return ResponseEntity.ok("Email verified successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

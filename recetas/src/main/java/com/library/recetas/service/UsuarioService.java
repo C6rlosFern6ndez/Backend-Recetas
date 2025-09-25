@@ -7,6 +7,7 @@ import com.library.recetas.mapper.UsuarioMapper;
 import com.library.recetas.exception.ResourceNotFoundException;
 import com.library.recetas.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final PasswordEncoder passwordEncoder; // Inject PasswordEncoder
 
     public List<UsuarioDTO> findAll() {
         return usuarioRepository.findAll().stream()
@@ -36,8 +38,8 @@ public class UsuarioService {
     public UsuarioDTO save(UsuarioDTO usuarioDTO) {
         validateUniqueFields(usuarioDTO);
         Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
-        // La contraseña debería ser codificada aquí antes de guardar
-        // usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+        // Encode the password before saving
+        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         return usuarioMapper.toDTO(usuarioRepository.save(usuario));
     }
 
@@ -58,6 +60,18 @@ public class UsuarioService {
             throw new ResourceNotFoundException("Usuario", "id", id);
         }
         usuarioRepository.deleteById(id);
+    }
+
+    /**
+     * Updates the avatar URL for a given user.
+     * @param email The email of the user whose avatar URL needs to be updated.
+     * @param avatarUrl The new avatar URL.
+     */
+    public void updateAvatarUrl(String email, String avatarUrl) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "email", email));
+        usuario.setAvatarUrl(avatarUrl);
+        usuarioRepository.save(usuario);
     }
 
     private void validateUniqueFields(UsuarioDTO usuarioDTO, Usuario existingUsuario) {
