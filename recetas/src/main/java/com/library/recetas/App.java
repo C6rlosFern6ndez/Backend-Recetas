@@ -33,6 +33,6 @@ public class App {
         String port = env.getProperty("server.port");
         String dbUrl = env.getProperty("spring.datasource.url");
 
-        logger.info("Aplicación iniciada correctamente en el puerto {} con base de datos: {}", port, dbUrl);
+        logger.info("Aplicacion iniciada correctamente en el puerto {} con base de datos: {}", port, dbUrl);
     }
 }

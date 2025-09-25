@@ -1,0 +1,6 @@
+Nuevas Funcionalidades: 
+Basado en el propósito de la aplicación (recetas), 
+se podrían implementar nuevas características como:
+
+- Mejoras en la gestión de perfiles de usuario.
+- Implementación de un sistema de notificaciones.

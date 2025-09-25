@@ -10,6 +10,7 @@ D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\model\Paso.jav
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\service\CategoriaService.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\dto\AuthRequest.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\repository\IngredienteRepository.java
+D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\service\FavoritoService.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\model\Categoria.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\security\JwtUtil.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\dto\RecetaDTO.java
@@ -32,6 +33,7 @@ D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\mapper\PasoMap
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\dto\AuthResponse.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\model\Usuario.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\controller\RecetaController.java
+D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\repository\FavoritoRepository.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\controller\UsuarioController.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\config\ApplicationConfig.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\mapper\RecetaMapper.java
@@ -58,6 +60,7 @@ D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\config\OpenApi
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\dto\UsuarioDTO.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\repository\ComentarioRepository.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\mapper\CategoriaMapper.java
+D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\model\Favorito.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\App.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\controller\AuthController.java
 D:\PROYECTOS\AppRecetas\recetas\src\main\java\com\library\recetas\controller\IngredienteController.java

@@ -2,6 +2,7 @@ package com.library.recetas.controller;
 
 import com.library.recetas.dto.RecetaDTO;
 import com.library.recetas.service.RecetaService;
+import com.library.recetas.service.FavoritoService; // Importamos el servicio de favoritos
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
  * Controlador REST para gestionar las recetas.
  * Proporciona endpoints para operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las recetas.
  * Incluye autorizaciones de seguridad para proteger los endpoints.
+ * También incluye un endpoint para la búsqueda avanzada de recetas y gestión de favoritos.
  */
 @RestController
 @RequestMapping("/api/recetas")
@@ -22,6 +24,8 @@ public class RecetaController {
 
     // Servicio que maneja la lógica de negocio para las recetas.
     private final RecetaService recetaService;
+    // Servicio para la gestión de favoritos.
+    private final FavoritoService favoritoService;
 
     /**
      * Obtiene todas las recetas registradas.
@@ -82,5 +86,69 @@ public class RecetaController {
     public ResponseEntity<Void> deleteReceta(@PathVariable Integer id) {
         recetaService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Busca recetas basándose en múltiples criterios opcionales.
+     * Los criterios se pasan como parámetros de consulta (query parameters).
+     *
+     * @param categoriaNombre Nombre de la categoría (opcional).
+     * @param maxTiempoPreparacion Tiempo máximo de preparación (opcional).
+     * @param searchTerm Término de búsqueda para título o descripción (opcional).
+     * @param ingredienteNombre Nombre del ingrediente (opcional).
+     * @param dificultad Nombre de la dificultad (opcional).
+     * @param minPuntuacion Puntuación mínima de calificación (opcional).
+     * @return ResponseEntity con una lista de RecetaDTO que coinciden con los criterios.
+     */
+    @GetMapping("/search")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<RecetaDTO>> searchRecetas(
+            @RequestParam(required = false) String categoriaNombre,
+            @RequestParam(required = false) Integer maxTiempoPreparacion,
+            @RequestParam(required = false) String searchTerm,
+            @RequestParam(required = false) String ingredienteNombre,
+            @RequestParam(required = false) String dificultad,
+            @RequestParam(required = false) Integer minPuntuacion) {
+        
+        List<RecetaDTO> resultados = recetaService.searchRecetas(categoriaNombre, maxTiempoPreparacion, searchTerm, ingredienteNombre, dificultad, minPuntuacion);
+        return ResponseEntity.ok(resultados);
+    }
+
+    // --- Endpoints para Favoritos ---
+
+    /**
+     * Añade una receta a los favoritos del usuario autenticado.
+     * @param recetaId El ID de la receta a añadir a favoritos.
+     * @return ResponseEntity con estado HTTP CREATED si se añadió correctamente.
+     */
+    @PostMapping("/favoritos/{recetaId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> addFavorito(@PathVariable Integer recetaId) {
+        favoritoService.addFavorito(recetaId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * Elimina una receta de los favoritos del usuario autenticado.
+     * @param recetaId El ID de la receta a eliminar de favoritos.
+     * @return ResponseEntity con estado HTTP NO_CONTENT si se eliminó correctamente.
+     */
+    @DeleteMapping("/favoritos/{recetaId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> removeFavorito(@PathVariable Integer recetaId) {
+        favoritoService.removeFavorito(recetaId);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Obtiene la lista de recetas favoritas del usuario autenticado.
+     * @param usuarioId El ID del usuario (debe coincidir con el usuario autenticado).
+     * @return ResponseEntity con una lista de RecetaDTOs favoritas.
+     */
+    @GetMapping("/favoritos/{usuarioId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<RecetaDTO>> getFavoritos(@PathVariable Integer usuarioId) {
+        // La validación de que el usuarioId coincide con el usuario autenticado se hace dentro del servicio.
+        return ResponseEntity.ok(favoritoService.getFavoritos(usuarioId));
     }
 }
