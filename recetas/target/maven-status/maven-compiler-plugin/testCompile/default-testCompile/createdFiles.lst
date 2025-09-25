@@ -1,2 +1,3 @@
 com\library\recetas\AppTest.class
 com\library\recetas\service\UsuarioServiceTest.class
+com\library\recetas\service\AuthServiceTest.class

@@ -138,7 +138,8 @@ class UsuarioServiceTest {
         updatedUser.setEmail("updated@example.com");
 
         when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-        when(usuarioMapper.toEntity(any(UsuarioDTO.class))).thenReturn(updatedUser);
+        // Mock the updateEntityFromDto method as used in UsuarioService.update
+        when(usuarioMapper.updateEntityFromDto(eq(updatedUserDTO), eq(usuario))).thenReturn(updatedUser);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(updatedUser);
         when(usuarioMapper.toDTO(any(Usuario.class))).thenReturn(updatedUserDTO);
 
@@ -150,7 +151,8 @@ class UsuarioServiceTest {
         assertEquals(updatedUserDTO.getId(), result.getId());
         assertEquals(updatedUserDTO.getNombreUsuario(), result.getNombreUsuario());
         verify(usuarioRepository, times(1)).findById(1);
-        verify(usuarioMapper, times(1)).toEntity(updatedUserDTO);
+        // Verify that updateEntityFromDto was called with the correct arguments
+        verify(usuarioMapper, times(1)).updateEntityFromDto(updatedUserDTO, usuario);
         verify(usuarioRepository, times(1)).save(any(Usuario.class));
         verify(usuarioMapper, times(1)).toDTO(updatedUser);
     }
